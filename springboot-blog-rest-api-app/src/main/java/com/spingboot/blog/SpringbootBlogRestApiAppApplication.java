@@ -1,4 +1,4 @@
-package com.spingboot.blog.springboot_blog_rest_api_app;
+package com.spingboot.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
