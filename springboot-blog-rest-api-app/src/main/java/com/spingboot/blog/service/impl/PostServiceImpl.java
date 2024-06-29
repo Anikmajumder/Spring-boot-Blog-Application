@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.spingboot.blog.entity.Post;
+import com.spingboot.blog.exception.ResourceNotFoundException;
 import com.spingboot.blog.payload.PostDto;
 import com.spingboot.blog.repository.PostRepository;
 import com.spingboot.blog.service.PostService;
@@ -63,6 +64,12 @@ public class PostServiceImpl implements PostService{
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
         return post;
+    }
+
+    @Override
+    public PostDto getPostById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post", "id", id));
+        return mapToDto(post);
     }
 
     

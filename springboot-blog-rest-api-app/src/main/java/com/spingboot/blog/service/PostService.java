@@ -7,6 +7,10 @@ import com.spingboot.blog.payload.PostDto;
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-   List<PostDto> getAllPost();
+    List<PostDto> getAllPost();
+
+    PostDto getPostById(Long id);
+
+
     
 } 
