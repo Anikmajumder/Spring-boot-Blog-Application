@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spingboot.blog.payload.PostDto;
@@ -34,8 +36,12 @@ public class PostController {
 
     //get all posts rest api
     @GetMapping
-    public List<PostDto>getAllPost(){
-        return postService.getAllPost();
+    public List<PostDto>getAllPost(
+        @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ){
+       
+        return postService.getAllPost(pageNo, pageSize);
     }
 
 
@@ -51,5 +57,13 @@ public class PostController {
 
         PostDto postResponse = postService.updatePost(postDto, id); 
         return new ResponseEntity<>( postResponse, HttpStatus.OK);
+    }
+
+    // delete post rest api
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable(name="id") long id){
+        postService.deletePostById(id);
+        return new ResponseEntity<>("Post enitiy deleted successfully", HttpStatus.OK);
     }
 }
