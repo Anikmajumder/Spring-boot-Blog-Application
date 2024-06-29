@@ -8,7 +8,7 @@ import com.spingboot.blog.payload.PostResponse;
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-    PostResponse getAllPost(int pageNo, int pageSize);
+    PostResponse getAllPost(int pageNo, int pageSize, String sortBy);
 
     PostDto getPostById(Long id);
 

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +45,10 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostResponse getAllPost(int pageNo, int pageSize) {
+    public PostResponse getAllPost(int pageNo, int pageSize, String sortBy) {
         
         //create pageable instant
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<Post> posts = postRepository.findAll(pageable);
 
@@ -93,7 +94,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public PostDto updatePost(PostDto postDto, long id) {
         //get post by id frm the database
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));    
+        Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post", "id", id));   
 
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
