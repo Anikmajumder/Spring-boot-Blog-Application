@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spingboot.blog.payload.PostDto;
+import com.spingboot.blog.payload.PostResponse;
 import com.spingboot.blog.service.PostService;
 
 @RestController
@@ -36,7 +37,7 @@ public class PostController {
 
     //get all posts rest api
     @GetMapping
-    public List<PostDto>getAllPost(
+    public PostResponse getAllPost(
         @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
     ){

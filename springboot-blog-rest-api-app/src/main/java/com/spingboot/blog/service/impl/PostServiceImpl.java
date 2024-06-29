@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.spingboot.blog.entity.Post;
 import com.spingboot.blog.exception.ResourceNotFoundException;
 import com.spingboot.blog.payload.PostDto;
+import com.spingboot.blog.payload.PostResponse;
 import com.spingboot.blog.repository.PostRepository;
 import com.spingboot.blog.service.PostService;
 
@@ -43,7 +44,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostDto> getAllPost(int pageNo, int pageSize) {
+    public PostResponse getAllPost(int pageNo, int pageSize) {
         
         //create pageable instant
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -53,8 +54,17 @@ public class PostServiceImpl implements PostService{
         //get content for page oblject
         List<Post> listOfPosts = posts.getContent();
 
-        return listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        List<PostDto> content = listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
     }
 
     private PostDto mapToDto(Post post){

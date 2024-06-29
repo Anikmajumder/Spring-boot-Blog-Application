@@ -3,11 +3,12 @@ package com.spingboot.blog.service;
 import java.util.List;
 
 import com.spingboot.blog.payload.PostDto;
+import com.spingboot.blog.payload.PostResponse;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-    List<PostDto> getAllPost(int pageNo, int pageSize);
+    PostResponse getAllPost(int pageNo, int pageSize);
 
     PostDto getPostById(Long id);
 
