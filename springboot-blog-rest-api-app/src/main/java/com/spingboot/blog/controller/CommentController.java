@@ -1,7 +1,10 @@
 package com.spingboot.blog.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,5 +30,11 @@ public class CommentController {
                                                     @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
 
+    }
+
+    //get all comments by post id REST API
+@GetMapping("/posts/{postId}/comments")
+    public List<CommentDto> getCommentsByPostId(@PathVariable(value = "postId") Long postId){
+        return commentService.getCommentsByPostId(postId);
     }
 }

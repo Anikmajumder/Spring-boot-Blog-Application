@@ -1,5 +1,8 @@
 package com.spingboot.blog.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.spingboot.blog.entity.Comment;
@@ -44,6 +47,16 @@ public class  CommentServiceImpl implements CommentService{
         
     }
 
+    @Override
+    public List<CommentDto> getCommentsByPostId(long postId) {
+        
+        //retrive comments by post id
+        List<Comment> comments = commentRepository.findByPostId(postId);
+
+        //convert list of comment entities to List of comment dto's
+        return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());        
+    }
+
     private CommentDto mapToDTO(Comment comment){
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
@@ -61,6 +74,10 @@ public class  CommentServiceImpl implements CommentService{
         comment.setBody(commentDto.getBody());
         return comment;
     }
+
+    
+
+    
 
 
 }
