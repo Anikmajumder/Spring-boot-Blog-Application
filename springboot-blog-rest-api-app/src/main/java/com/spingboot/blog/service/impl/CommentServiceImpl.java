@@ -3,10 +3,12 @@ package com.spingboot.blog.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.spingboot.blog.entity.Comment;
 import com.spingboot.blog.entity.Post;
+import com.spingboot.blog.exception.BlogAPIException;
 import com.spingboot.blog.exception.ResourceNotFoundException;
 import com.spingboot.blog.payload.CommentDto;
 import com.spingboot.blog.repository.CommentRepository;
@@ -57,6 +59,26 @@ public class  CommentServiceImpl implements CommentService{
         return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());        
     }
 
+    @Override
+    public CommentDto getCommentsById(Long postId, Long commentId) {
+       //retrieve post entity by id
+       Post post = postRepository.findById(postId).orElseThrow(
+        ()-> new ResourceNotFoundException("Post", "id", postId)
+       );
+
+       // retrieve comment by id
+
+       Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new ResourceNotFoundException("Comment", "id", commentId));        
+
+        if(!comment.getPost().getId().equals(post.getId())){
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belogn to post");
+        }
+        
+        return mapToDTO(comment);
+    }
+
+
     private CommentDto mapToDTO(Comment comment){
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
@@ -74,10 +96,6 @@ public class  CommentServiceImpl implements CommentService{
         comment.setBody(commentDto.getBody());
         return comment;
     }
-
-    
-
-    
 
 
 }

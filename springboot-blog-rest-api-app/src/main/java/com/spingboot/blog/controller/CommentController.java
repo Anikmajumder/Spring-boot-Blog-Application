@@ -33,8 +33,18 @@ public class CommentController {
     }
 
     //get all comments by post id REST API
-@GetMapping("/posts/{postId}/comments")
+    @GetMapping("/posts/{postId}/comments")
     public List<CommentDto> getCommentsByPostId(@PathVariable(value = "postId") Long postId){
         return commentService.getCommentsByPostId(postId);
     }
+
+    //get comments by id REST AP
+    @GetMapping("/posts/{postId}/comments/{id}")
+    public ResponseEntity<CommentDto> getCommentById(@PathVariable(value = "postId") Long postId,
+                                                     @PathVariable(value = "id") Long commentId){
+        CommentDto commentDto = commentService.getCommentsById(postId, commentId);
+        return new ResponseEntity<>(commentDto, HttpStatus.OK);
+                                                        
+    }
+
 }
